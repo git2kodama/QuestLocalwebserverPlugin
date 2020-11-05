@@ -9,8 +9,7 @@ public class NativeLocalWebServer {
 
     public void debug_message(){
         UnityPlayer.UnitySendMessage("webserver", "", "");
+        Log.i("Unity","debug_message");
     }
-
-
 
 }
