@@ -22,11 +22,18 @@ android {
 }
 
 dependencies {
-    //implementation fileTree(dir: "libs", include: ["*.jar"])
-    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    implementation files('libs/nanohttpd-2.3.1.jar')
+    compileOnly files('libs/classes.jar')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    //implementation 'org.nanohttpd:nanohttpd-webserver:2.3.1'
+}
 
+
+task exportAar(type: Copy, dependsOn: assemble)  {
+    from './build/outputs/aar'
+    into 'F:/Unity_tips/Quest_LocalWebServer/Assets/Plugins/Android'
+    include 'WebServer-debug.aar'
 }
