@@ -11,7 +11,7 @@ public class NativeLocalWebServer extends NanoHTTPD {
     public NativeLocalWebServer() throws IOException {
         super(2921);
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
-        debug_message("Running! Point your browsers to http://localhost:8080/ \n");
+        debug_message("Running! Point your browsers to http://localhost:2921/ \n");
     }
 
     public void debug_message(String _message){

@@ -37,12 +37,14 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../WebServer/build/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../WebServer/build/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../WebServer/src/main/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../WebServer/src/main/assets" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../../../WebServer/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../WebServer/build" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 29 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: ./WebServer/libs/classes.jar" level="project" />
+    <orderEntry type="library" name="Gradle: ./WebServer/libs/nanohttpd-2.3.1.jar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.1.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0" level="project" />
