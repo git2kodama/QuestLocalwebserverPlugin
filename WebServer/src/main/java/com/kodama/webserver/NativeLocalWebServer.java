@@ -22,7 +22,35 @@ public class NativeLocalWebServer extends NanoHTTPD {
 
     @Override
     public Response serve(IHTTPSession session) {
-        return newFixedLengthResponse("<html><h1>これでOK</h1></html>");
+        String _mime;
+
+        _mime = this.get_mime(session.getUri());
+
+        return newFixedLengthResponse("<html><h1>"+_mime+"</h1></html>");
+    }
+
+    private String get_mime(String mime) {
+        String _mime="/";
+
+        if (mime.endsWith(".ico")) {
+            _mime = "image/x-icon";
+        } else if (mime.endsWith(".png") || mime.endsWith(".PNG")) {
+            _mime = "image/png";
+        } else if (mime.endsWith(".jpg") || mime.endsWith(".JPG") || mime.endsWith(".jpeg") || mime.endsWith(".JPEG")) {
+            _mime = "image/jpeg";
+        } else if (mime.endsWith(".js")) {
+            _mime = "application/javascript";
+        } else if (mime.endsWith(".css")) {
+            _mime = "text/css";
+        } else if (mime.endsWith(".html") || mime.endsWith(".htm")) {
+            _mime = "text/html";
+        } else if (mime.endsWith(".map")) {
+            _mime = "application/json";
+        } else {
+            _mime = "text/plain";
+        }
+
+        return _mime;
     }
 
     public void debug_message(String _message){
