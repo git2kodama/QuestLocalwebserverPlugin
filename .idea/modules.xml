@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Localwebserver.iml" filepath="$PROJECT_DIR$/.idea/modules/Localwebserver.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/WebServer/Localwebserver.WebServer.iml" filepath="$PROJECT_DIR$/.idea/modules/WebServer/Localwebserver.WebServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/quest_external_storage/Localwebserver.quest_external_storage.iml" filepath="$PROJECT_DIR$/.idea/modules/quest_external_storage/Localwebserver.quest_external_storage.iml" />
     </modules>
   </component>
 </project>

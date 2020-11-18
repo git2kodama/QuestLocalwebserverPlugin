@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/WebServer" />
+            <option value="$PROJECT_DIR$/quest_external_storage" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
