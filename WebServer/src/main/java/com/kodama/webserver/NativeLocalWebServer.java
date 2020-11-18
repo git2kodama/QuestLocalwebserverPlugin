@@ -30,7 +30,7 @@ public class NativeLocalWebServer extends NanoHTTPD {
     }
 
     private String get_mime(String mime) {
-        String _mime="/";
+        String _mime;
 
         if (mime.endsWith(".ico")) {
             _mime = "image/x-icon";
