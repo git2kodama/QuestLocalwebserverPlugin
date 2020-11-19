@@ -20,31 +20,57 @@ public class NativeLocalWebServer extends NanoHTTPD {
         _www_root = _path + "/www";
     }
 
+    //今回はファイルを返す静的用途
     @Override
     public Response serve(IHTTPSession session) {
         String _mime;
-
+        Response.Status _status;
+        // Mime
         _mime = this.get_mime(session.getUri());
 
-        return newFixedLengthResponse("<html><h1>"+_mime+"</h1></html>");
+        // ステータス
+        _status = this.get_status(_mime);
+
+        // ファイルパス取得
+
+        // ファイル読み込み
+
+        return newFixedLengthResponse("<html><h1>"+_mime+"</h1><h1>"+_status+"</h1><h1>"+session.getUri()+"</h1></html>");
+    }
+    // Mimeからステータスを抽出する
+    private  Response.Status get_status(String mime) {
+        Response.Status _status;
+
+        _status = Response.Status.OK;
+
+        if(mime.endsWith("plain")) {
+            _status = Response.Status.NOT_FOUND;
+        }
+
+        return _status;
     }
 
-    private String get_mime(String mime) {
+    // URLからMimeを抽出する。
+    private String get_mime(String url) {
         String _mime;
 
-        if (mime.endsWith(".ico")) {
+        if("\\".equals(url)) {
+            _mime = ".html";
+        }
+
+        if (url.endsWith(".ico")) {
             _mime = "image/x-icon";
-        } else if (mime.endsWith(".png") || mime.endsWith(".PNG")) {
+        } else if (url.endsWith(".png") || url.endsWith(".PNG")) {
             _mime = "image/png";
-        } else if (mime.endsWith(".jpg") || mime.endsWith(".JPG") || mime.endsWith(".jpeg") || mime.endsWith(".JPEG")) {
+        } else if (url.endsWith(".jpg") || url.endsWith(".JPG") || url.endsWith(".jpeg") || url.endsWith(".JPEG")) {
             _mime = "image/jpeg";
-        } else if (mime.endsWith(".js")) {
+        } else if (url.endsWith(".js")) {
             _mime = "application/javascript";
-        } else if (mime.endsWith(".css")) {
+        } else if (url.endsWith(".css")) {
             _mime = "text/css";
-        } else if (mime.endsWith(".html") || mime.endsWith(".htm")) {
+        } else if (url.endsWith(".html") || url.endsWith(".htm")) {
             _mime = "text/html";
-        } else if (mime.endsWith(".map")) {
+        } else if (url.endsWith(".map")) {
             _mime = "application/json";
         } else {
             _mime = "text/plain";
