@@ -2,13 +2,17 @@ package com.kodama.webserver;
 
 import com.unity3d.player.UnityPlayer;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import fi.iki.elonen.NanoHTTPD;
 
 public class NativeLocalWebServer extends NanoHTTPD {
 
-    private String _www_root="";
+    private InputStream m_file_stream;
+    private int m_file_size;
+    private final Object m_sync_token = new Object();
 
     public NativeLocalWebServer() throws IOException {
         super(2921);
@@ -16,27 +20,49 @@ public class NativeLocalWebServer extends NanoHTTPD {
         debug_message("Running! Point your browsers to http://localhost:2921/ \n");
     }
 
-    public void set_www_root(String _path){
-        _www_root = _path + "/www";
+    synchronized void get_resorce_bytes(byte[] _data,int _size) throws IOException {
+        if(m_file_stream != null) {
+            m_file_stream.close();
+        }
+        debug_message("message");
+        try {
+            m_file_stream = new ByteArrayInputStream(_data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            debug_message("ByteArrayInputStream 失敗");
+        }
+        m_file_size = _size;
+        debug_message("image size : "+_size);
+        synchronized (m_sync_token) {
+            m_sync_token.notify();
+        }
+
     }
 
     //今回はファイルを返す静的用途
     @Override
     public Response serve(IHTTPSession session) {
         String _mime;
-        Response.Status _status;
+        Response.IStatus _status;
         // Mime
         _mime = this.get_mime(session.getUri());
 
         // ステータス
         _status = this.get_status(_mime);
 
-        // ファイルパス取得
-
         // ファイル読み込み
+        UnityPlayer.UnitySendMessage("webserver","android_resource_send", session.getUri());
+        synchronized (m_sync_token) {
+            try {
+                m_sync_token.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
-        return newFixedLengthResponse("<html><h1>"+_mime+"</h1><h1>"+_status+"</h1><h1>"+session.getUri()+"</h1></html>");
+        return newFixedLengthResponse(_status,_mime,m_file_stream,m_file_size);
     }
+
     // Mimeからステータスを抽出する
     private  Response.Status get_status(String mime) {
         Response.Status _status;
@@ -54,8 +80,8 @@ public class NativeLocalWebServer extends NanoHTTPD {
     private String get_mime(String url) {
         String _mime;
 
-        if("\\".equals(url)) {
-            _mime = ".html";
+        if("/".equals(url)) {
+            url = "/.html";
         }
 
         if (url.endsWith(".ico")) {
