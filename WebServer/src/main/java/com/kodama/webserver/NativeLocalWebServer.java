@@ -21,10 +21,10 @@ public class NativeLocalWebServer extends NanoHTTPD {
     }
 
     synchronized void get_resorce_bytes(byte[] _data,int _size) throws IOException {
+        debug_message(String.valueOf(_size));
         if(m_file_stream != null) {
             m_file_stream.close();
         }
-        debug_message("message");
         try {
             m_file_stream = new ByteArrayInputStream(_data);
         } catch (Exception e) {
@@ -32,11 +32,19 @@ public class NativeLocalWebServer extends NanoHTTPD {
             debug_message("ByteArrayInputStream 失敗");
         }
         m_file_size = _size;
-        debug_message("image size : "+_size);
         synchronized (m_sync_token) {
             m_sync_token.notify();
         }
 
+    }
+
+    // Unity側で読み込みErrorの場合はここ
+    synchronized void send_error(String _error_mess) {
+        debug_message(_error_mess);
+
+        synchronized (m_sync_token) {
+            m_sync_token.notify();
+        }
     }
 
     //今回はファイルを返す静的用途
@@ -49,7 +57,7 @@ public class NativeLocalWebServer extends NanoHTTPD {
 
         // ステータス
         _status = this.get_status(_mime);
-
+        debug_message("============ serve start ==================");
         // ファイル読み込み
         UnityPlayer.UnitySendMessage("webserver","android_resource_send", session.getUri());
         synchronized (m_sync_token) {
@@ -59,7 +67,10 @@ public class NativeLocalWebServer extends NanoHTTPD {
                 e.printStackTrace();
             }
         }
-
+        debug_message("============ serve end ==================");
+        if(m_file_stream == null) {
+            return newFixedLengthResponse("");
+        }
         return newFixedLengthResponse(_status,_mime,m_file_stream,m_file_size);
     }
 
